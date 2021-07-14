@@ -1,26 +1,25 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
-       stage('clean') {
-            steps {
-                sh "mvn clean install"
-            }
-        }
-	stage('Deploy') {
-            steps {
-                echo 'Testing Deployment'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh "mvn test"
-            }
-        }
-    }
+pipeline{
+	agent{
+		node{
+			label 'master'
+		}
+	}
+	
+	options{
+		timestamps()
+	}
+	
+	
+	stages{
+		stage("Checkout, Test & Publish") {
+			steps{
+				git "https://github.com/IshanShah1989/JenkinsPipeLine.git"
+				script{
+					bat(/mvn clean test/)
+				}
+				
+				step([$class : 'Publisher', reportFileNamePattern : '**/testng-results.xml'])
+			}
+		}
+	}
 }
