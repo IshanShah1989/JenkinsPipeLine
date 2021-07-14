@@ -1,0 +1,13 @@
+node {
+	stage ('SCM checkout'){
+		git "https://gitlab.com/mbabilo/experitest"
+		}
+	stage ('Build'){
+    	dir("jenkinsPipeline") {
+	   sh "mvn clean install"
+       }
+       	dir("jenkinsPipeline/target") {
+	   sh "mvn test"
+       }
+		}
+}
