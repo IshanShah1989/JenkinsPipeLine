@@ -12,6 +12,11 @@ pipeline {
                 sh "mvn clean install"
             }
         }
+	stage('Deploy') {
+            steps {
+                echo 'Testing Deployment'
+            }
+        }
         stage('Test') {
             steps {
                 sh "mvn test"
